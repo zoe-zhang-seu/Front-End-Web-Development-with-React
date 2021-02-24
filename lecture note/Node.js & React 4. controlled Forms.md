@@ -1,11 +1,10 @@
-```
-```
 This note focus on how to design a controlled form in the react application
 
 ## Controlled forms
 - [React Controlled form tutorial](https://reactjs.org/docs/forms.html)
 - [Reactstrap form format](https://reactstrap.github.io/components/form/)
 ##### Q: what is controlled form? 
+
 A: This react component renders a form and controls what happens in that form on subsequent user input. An input form element whose value is controlled by React in this way is called a “controlled component”
 
 ######  Basic format
@@ -63,6 +62,7 @@ render(){
 ```
 
 #### Demo of uncontrolled form use reference to get value
+
 ```
 class NameForm extends React.Component {
   constructor(props) {
@@ -174,6 +174,7 @@ Q: Why we need to declare the **touched part:**`touched:{
                 telnum:false,
                 email:false
             }` in the **constructor**?
+            
 A: that is to validate the input content meets the criteria, which ensures the subsequent process such as storage and filtering. 
 1. At first, we decide  the default value of the input is `false`, that is the input is not meet the criteria. 
 2. Then, we write the **validate(input)** function to check whether inputs meet the criteria, which attributes are stored in the `this.state.touched`. 
@@ -182,15 +183,18 @@ A: that is to validate the input content meets the criteria, which ensures the s
 
 
 Q:How to understand the code of onBlur usage, such as ` this,handleBlur = this.handleBlur.bind(this);` declared in the constructor?
+
 A:[onBlur training page](https://training-course-material.com/training/Reactjs_basics)
 
 Q：How the error is reported?
+
 A: 
 1.  set the constant errort in the render() part
 2.  ` <FormFeedback>{errors.email}</FormFeedback>` after the input
 
 
 Further Reading Material
+
 - [uncontrolled/controlled input](https://medium.com/@peter.yun.kim/controlled-and-uncontrolled-input-values-in-react-907119cc98d4)
 - [how to work with forms, inputs and events](https://medium.com/capital-one-tech/how-to-work-with-forms-inputs-and-events-in-react-c337171b923b)
 - [input validation](https://goshakkk.name/instant-form-fields-validation-react/)
