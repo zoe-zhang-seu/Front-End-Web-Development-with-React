@@ -23,8 +23,8 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) { // console.log("Current State is: " + JSON.stringify(values));
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render(){
@@ -97,15 +97,17 @@ class CommentForm extends Component {
     function RenderDish({dish}){
     	if (dish != null){
           return (
-            <div key={dish.id} >
-              <Card>
-                  <CardImg width ="100%" src = {dish.image} alt={dish.name}/>
-                  <CardBody>
-                        <CardTitle >{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                  </CardBody>
-              </Card>
-            </div>
+          <div className="col-12 col-md-5 m-1">
+              <div key={dish.id} >
+                  <Card>
+                      <CardImg width ="100%" src = {dish.image} alt={dish.name}/>
+                      <CardBody>
+                            <CardTitle >{dish.name}</CardTitle>
+                            <CardText>{dish.description}</CardText>
+                      </CardBody>
+                  </Card>
+              </div>
+           </div>
           )
         }
       else
@@ -116,28 +118,33 @@ class CommentForm extends Component {
        } 
     }
 
-    function RenderComments ({comments}){
+    function RenderComments ({comments,addComment,dishId}){
     	console.log(comments);
-        const thisComment = comments.map((comment) => { 
-             return ( 
-                <ul className='list-inline'>
-                  <li key={comment.id}>
-                      <p>{comment.comment}</p>
-                      <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
-                      </p>
-                  </li>
-                </ul>
-              
-            )
-        });
-        
+      if (comments!=null){
         return(
-              <div >
-                <h4>Comments </h4>
-                  {thisComment}
-              </div>
-          )
-    }
+        <div className="col-12 col-md-5 m-1">
+            <h4> Comments </h4>
+             <ul className='list-unstyled'>
+                  {comments.map((comment)=>{
+                      return( 
+                          <li key={comment.id}>
+                              <p>{comment.comment}</p>
+                              <p>-- {comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}
+                              </p>
+                          </li>
+                      );
+                    })}
+             </ul>
+             <CommentForm dishId={dishId} addComment={addComment}/>
+        </div>
+        );
+      }
+      else{
+        return(
+              <div></div>
+        );
+      }
+    } 
 
     const DishDetail = (props) => {
     	if (props.dish != null){
@@ -155,13 +162,12 @@ class CommentForm extends Component {
                  </div>                
               </div>
               <div className="row">
-                    <div className="col-12 col-md-5 m-1">
-                        <RenderDish dish={props.dish} />
-                    </div>
-                    <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} />
-                        <CommentForm dishId={ props.dish.id } postComment={ props.postComment}/>
-                    </div>
+                          <RenderDish dish={props.dish} />
+                          <RenderComments comments={props.comments}
+                            addComment={props.addComment}
+                            dishId={props.dish.id}
+                          />
+                 
 	    			  </div>
 	    		</div>
     		)
